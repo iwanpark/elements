@@ -5530,8 +5530,6 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     std::stringstream ss;
     ss << counter;
 
-    LogPrintf("IWAN");
-
     UniValue obj(UniValue::VOBJ);
     obj.pushKV("txid", tx->GetHash().GetHex());
     obj.pushKV("bitcoin_address", EncodeParentDestination(bitcoin_address));

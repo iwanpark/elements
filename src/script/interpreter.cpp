@@ -1659,14 +1659,18 @@ uint256 SignatureHash(const CScript& scriptCode, const T& txTo, unsigned int nIn
 
         // Input prevouts/nSequence (none/all, depending on flags)
         ss << hashPrevouts;
+        LogPrintf("ss << hashPrevouts = %s\n", hashPrevouts);
         ss << hashSequence;
+        LogPrintf("ss << hashSequence = %s\n", hashSequence);
         if (g_con_elementsmode) {
             ss << hashIssuance;
+            LogPrintf("ss << hashIssuance = %s\n", hashIssuance);
         }
         // The input being signed (replacing the scriptSig with scriptCode + amount)
         // The prevout may already be contained in hashPrevout, and the nSequence
         // may already be contain in hashSequence.
         ss << txTo.vin[nIn].prevout;
+        LogPrintf("ss << txTo.vin[nIn].prevout = %s\n", txTo.vin[nIn].prevout);
         ss << scriptCode;
         if (g_con_elementsmode) {
             ss << amount;

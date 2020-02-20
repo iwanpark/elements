@@ -1670,7 +1670,7 @@ uint256 SignatureHash(const CScript& scriptCode, const T& txTo, unsigned int nIn
         // The prevout may already be contained in hashPrevout, and the nSequence
         // may already be contain in hashSequence.
         ss << txTo.vin[nIn].prevout;
-        LogPrintf("ss << txTo.vin[nIn].prevout = %s\n", HexStr(txTo.vin[nIn].prevout));
+        LogPrintf("ss << txTo.vin[nIn].prevout = %s\n", HexStr(txTo.vin[nIn].prevout.begin(), txTo.vin[nIn].prevout.end()));
         ss << scriptCode;
         if (g_con_elementsmode) {
             ss << amount;

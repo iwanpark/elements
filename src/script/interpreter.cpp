@@ -1654,57 +1654,57 @@ uint256 SignatureHash(const CScript& scriptCode, const T& txTo, unsigned int nIn
 
         CHashWriter ss(SER_GETHASH, 0);
         // Version
-        LogPrintf("ss << txTo.nVersion\n");
+        LogPrintf("[iwan][hash] ss << txTo.nVersion\n");
         ss << txTo.nVersion;
 
         // Input prevouts/nSequence (none/all, depending on flags)
-        LogPrintf("ss << hashPrevouts\n");
+        LogPrintf("[iwan][hash] ss << hashPrevouts\n");
         ss << hashPrevouts;
 
-        LogPrintf("ss << hashSequence\n");
+        LogPrintf("[iwan][hash] ss << hashSequence\n");
         ss << hashSequence;
 
         if (g_con_elementsmode) {
-            LogPrintf("ss << hashIssuance\n");
+            LogPrintf("[iwan][hash] ss << hashIssuance\n");
             ss << hashIssuance;
         }
 
         // The input being signed (replacing the scriptSig with scriptCode + amount)
         // The prevout may already be contained in hashPrevout, and the nSequence
         // may already be contain in hashSequence.
-        LogPrintf("ss << txTo.vin[nIn].prevout\n");
+        LogPrintf("[iwan][hash] ss << txTo.vin[nIn].prevout\n");
         ss << txTo.vin[nIn].prevout;
 
-        LogPrintf("ss << scriptCode\n");
+        LogPrintf("[iwan][hash] ss << scriptCode\n");
         ss << scriptCode;
 
         if (g_con_elementsmode) {
-            LogPrintf("ss << amount\n");
+            LogPrintf("[iwan][hash] ss << amount\n");
             ss << amount;
         } else {
-            LogPrintf("ss << amount.GetAmount()\n");
+            LogPrintf("[iwan][hash] ss << amount.GetAmount()\n");
             ss << amount.GetAmount();
         }
 
-        LogPrintf("txTo.vin[nIn].nSequence\n");
+        LogPrintf("[iwan][hash] txTo.vin[nIn].nSequence\n");
         ss << txTo.vin[nIn].nSequence;
 
         if (!txTo.vin[nIn].assetIssuance.IsNull()) {
             assert(g_con_elementsmode);
-            LogPrintf("txTo.vin[nIn].assetIssuance\n");
+            LogPrintf("[iwan][hash] txTo.vin[nIn].assetIssuance\n");
             ss << txTo.vin[nIn].assetIssuance;
         }
 
         // Outputs (none/one/all, depending on flags)
-        LogPrintf("ss << hashOutputs\n");
+        LogPrintf("[iwan][hash] ss << hashOutputs\n");
         ss << hashOutputs;
 
         // Locktime
-        LogPrintf("ss << txTo.nLockTime\n");
+        LogPrintf("[iwan][hash] ss << txTo.nLockTime\n");
         ss << txTo.nLockTime;
-        
+
         // Sighash type
-        LogPrintf("ss << nHashType\n");
+        LogPrintf("[iwan][hash] ss << nHashType\n");
         ss << nHashType;
 
         LogPrintf("---- GetHash() ----\n");

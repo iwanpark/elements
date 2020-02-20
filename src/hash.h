@@ -60,7 +60,7 @@ public:
     }
 
     CHash160& Write(const unsigned char *data, size_t len) {
-        LogPrintf("write to hashbuf %s", HexStr(data, data + len));
+        LogPrintf("write to hashbuf %s\n", HexStr(data, data + len));
         sha.Write(data, len);
         return *this;
     }

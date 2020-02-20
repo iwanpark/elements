@@ -5519,7 +5519,7 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     nulldata << btcpubkeybytes;
     LogPrintf("[iwan][send] btcpubkeybytes = %s\n", HexStr(btcpubkeybytes.begin(), btcpubkeybytes.end()));
     nulldata << whitelistproof;
-    LogPrintf("[iwan][send] btcpubkeybytes = %s\n", HexStr(whitelistproof.begin(), whitelistproof.end()));
+    LogPrintf("[iwan][send] whitelistproof = %s\n", HexStr(whitelistproof.begin(), whitelistproof.end()));
     CTxDestination address(nulldata);
     assert(GetScriptForDestination(nulldata).IsPegoutScript(genesisBlockHash));
 

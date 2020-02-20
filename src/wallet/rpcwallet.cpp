@@ -5513,13 +5513,13 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     uint256 genesisBlockHash = Params().ParentGenesisBlockHash();
     NullData nulldata;
     nulldata << std::vector<unsigned char>(genesisBlockHash.begin(), genesisBlockHash.end());
-    LogPrintf("[iwan][send] genesisBlockHash = %s\n", genesisBlockHash.begin(), genesisBlockHash.end());
+    LogPrintf("[iwan][send] genesisBlockHash = %s\n", HexStr(genesisBlockHash.begin(), genesisBlockHash.end()));
     nulldata << std::vector<unsigned char>(mainchain_script.begin(), mainchain_script.end());
-    LogPrintf("[iwan][send] mainchainScript = %s\n", mainchain_script.begin(), mainchain_script.end());
+    LogPrintf("[iwan][send] mainchainScript = %s\n", HexStr(mainchain_script.begin(), mainchain_script.end()));
     nulldata << btcpubkeybytes;
-    LogPrintf("[iwan][send] btcpubkeybytes = %s\n", btcpubkeybytes.begin(), btcpubkeybytes.end());
+    LogPrintf("[iwan][send] btcpubkeybytes = %s\n", HexStr(btcpubkeybytes.begin(), btcpubkeybytes.end()));
     nulldata << whitelistproof;
-    LogPrintf("[iwan][send] btcpubkeybytes = %s\n", whitelistproof.begin(), whitelistproof.end());
+    LogPrintf("[iwan][send] btcpubkeybytes = %s\n", HexStr(whitelistproof.begin(), whitelistproof.end()));
     CTxDestination address(nulldata);
     assert(GetScriptForDestination(nulldata).IsPegoutScript(genesisBlockHash));
 

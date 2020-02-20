@@ -32,8 +32,8 @@ bool MutableTransactionSignatureCreator::CreateSig(const SigningProvider& provid
 
     uint256 hash = SignatureHash(scriptCode, *txTo, nIn, nHashType, amount, sigversion);
 
-    LogPrintf("[iwan][hash] hash(hashBaseData) = %s\n", hash);
     LogPrintf("[iwan][sign] key = %s\n", HexStr(key.begin(), key.end()));
+    LogPrintf("[iwan][hash] hash(hashBaseData) = %s\n", hash);
 
     if (!key.Sign(hash, vchSig))
         return false;

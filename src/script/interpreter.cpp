@@ -1655,40 +1655,48 @@ uint256 SignatureHash(const CScript& scriptCode, const T& txTo, unsigned int nIn
         CHashWriter ss(SER_GETHASH, 0);
         // Version
         ss << txTo.nVersion;
-        LogPrintf("ss << txTo.nVersion = %s\n", txTo.nVersion);
+        LogPrintf("ss << txTo.nVersion\n");
 
         // Input prevouts/nSequence (none/all, depending on flags)
         ss << hashPrevouts;
-        LogPrintf("ss << hashPrevouts = %s\n", hashPrevouts);
+        LogPrintf("ss << hashPrevouts\n");
         ss << hashSequence;
-        LogPrintf("ss << hashSequence = %s\n", hashSequence);
+        LogPrintf("ss << hashSequence\n");
         if (g_con_elementsmode) {
             ss << hashIssuance;
-            LogPrintf("ss << hashIssuance = %s\n", hashIssuance);
+            LogPrintf("ss << hashIssuance\n");
         }
         // The input being signed (replacing the scriptSig with scriptCode + amount)
         // The prevout may already be contained in hashPrevout, and the nSequence
         // may already be contain in hashSequence.
         ss << txTo.vin[nIn].prevout;
-        LogPrintf("ss << txTo.vin[nIn].prevout = %s\n", txTo.vin[nIn].prevout.serialize());
+        LogPrintf("ss << txTo.vin[nIn].prevout\n");
         ss << scriptCode;
         if (g_con_elementsmode) {
             ss << amount;
+            LogPrintf("ss << amount\n");
         } else {
             ss << amount.GetAmount();
+            LogPrintf("ss << amount.GetAmount()\n");
         }
         ss << txTo.vin[nIn].nSequence;
+        LogPrintf("txTo.vin[nIn].nSequence\n");
         if (!txTo.vin[nIn].assetIssuance.IsNull()) {
             assert(g_con_elementsmode);
             ss << txTo.vin[nIn].assetIssuance;
+            LogPrintf("txTo.vin[nIn].assetIssuance\n");
         }
         // Outputs (none/one/all, depending on flags)
         ss << hashOutputs;
+        LogPrintf("ss << hashOutputs\n");
         // Locktime
         ss << txTo.nLockTime;
+        LogPrintf("ss << txTo.nLockTime\n");
         // Sighash type
         ss << nHashType;
+        LogPrintf("ss << nHashType\n");
 
+        LogPrintf("---- GetHash() ----")
         return ss.GetHash();
     }
 

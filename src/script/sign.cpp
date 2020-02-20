@@ -13,6 +13,9 @@
 
 #include <chainparams.h>
 
+#include <util/system.h>
+#include <util/strencodings.h>
+
 typedef std::vector<unsigned char> valtype;
 
 MutableTransactionSignatureCreator::MutableTransactionSignatureCreator(const CMutableTransaction* txToIn, unsigned int nInIn, const CConfidentialValue& amountIn, int nHashTypeIn) : txTo(txToIn), nIn(nInIn), nHashType(nHashTypeIn), amount(amountIn), checker(txTo, nIn, amountIn) {}
@@ -28,6 +31,7 @@ bool MutableTransactionSignatureCreator::CreateSig(const SigningProvider& provid
         return false;
 
     uint256 hash = SignatureHash(scriptCode, *txTo, nIn, nHashType, amount, sigversion);
+    LogPrintf("key to sign = %s\n", HexStr(key.begin(), key.end()));
     if (!key.Sign(hash, vchSig))
         return false;
     vchSig.push_back((unsigned char)nHashType);

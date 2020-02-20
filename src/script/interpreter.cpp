@@ -1696,7 +1696,7 @@ uint256 SignatureHash(const CScript& scriptCode, const T& txTo, unsigned int nIn
         ss << nHashType;
         LogPrintf("ss << nHashType\n");
 
-        LogPrintf("---- GetHash() ----")
+        LogPrintf("---- GetHash() ----\n");
         return ss.GetHash();
     }
 

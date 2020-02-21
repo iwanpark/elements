@@ -5444,16 +5444,22 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     // Parse master pubkey
     CPubKey masterpub = xpub.pubkey;
     secp256k1_pubkey masterpub_secp;
+
+    LogPrintf("[iwan][ready] masterpub = %s\n", HexStr(masterpub));
     int ret = secp256k1_ec_pubkey_parse(secp256k1_ctx, &masterpub_secp, masterpub.begin(), masterpub.size());
+    LogPrintf("[iwan][ready] masterpub_secp = secp256k1_ec_pubkey_parse(masterpub) = %s\n", HexStr(masterpub_secp.data, masterpub_secp.data + 64));
+
     if (ret != 1) {
         throw JSONRPCError(RPC_WALLET_ERROR, "Master pubkey could not be parsed.");
     }
 
     secp256k1_pubkey btcpub_secp;
     memcpy(&btcpub_secp, &masterpub_secp, sizeof(secp256k1_pubkey));
+    LogPrintf("[iwan][ready] btcpub_secp = masterpub_secp = %s\n", HexStr(btcpub_secp.data, btcpub_secp.data + 64));
 
     // Negate master pubkey
     ret = secp256k1_ec_pubkey_negate(secp256k1_ctx, &masterpub_secp);
+    LogPrintf("[iwan][ready] masterpub_secp = secp256k1_ec_pubkey_negate(masterpub_secp) = %s\n", HexStr(masterpub_secp.data, masterpub_secp.data + 64));
 
     // Make sure negated master pubkey is in PAK list at same index as online_pubkey
     if (memcmp((void *)&paklist.OfflineKeys()[whitelistindex], (void *)&masterpub_secp, sizeof(secp256k1_pubkey)) != 0) {
@@ -5467,16 +5473,24 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
 
     // Tweak offline pubkey by tweakSum aka sumkey to get bitcoin key
     std::vector<unsigned char> tweakSum;
+    LogPrintf("[iwan][ready] key_path       for tweakSum = %s\n", HexStr(key_path));
+    LogPrintf("[iwan][ready] xpub.pubkey    for tweakSum = %s\n", HexStr(xpub.pubkey));
+    LogPrintf("[iwan][ready] xpub.chaincode for tweakSum = %s\n", HexStr(xpub.chaincode));
     if (!DerivePubTweak(key_path, xpub.pubkey, xpub.chaincode, tweakSum)) {
         throw JSONRPCError(RPC_WALLET_ERROR, "Could not create xpub tweak to generate proof.");
     }
+    LogPrintf("[iwan][ready] tweakSum = DerivePubTweak(key_path, xpub.pubkey, xpub.chaincode) = %s\n", HexStr(tweakSum.begin(), tweakSum.end()));
+
+    LogPrintf("[iwan][ready] tweakSum.data() for btcpub_secp = %s\n", HexStr(tweakSum.data()));
     ret = secp256k1_ec_pubkey_tweak_add(secp256k1_ctx, &btcpub_secp, tweakSum.data());
+    LogPrintf("[iwan][ready] btcpub_secp = secp256k1_ec_pubkey_tweak_add(tweakSum.data()) = %s\n", HexStr(btcpub_secp.data, btcpub_secp.data + 64));
     assert(ret);
 
     std::vector<unsigned char> btcpubkeybytes;
     btcpubkeybytes.resize(33);
     size_t btclen = 33;
     ret = secp256k1_ec_pubkey_serialize(secp256k1_ctx, &btcpubkeybytes[0], &btclen, &btcpub_secp, SECP256K1_EC_COMPRESSED);
+    LogPrintf("[iwan][ready] btcpubkeybytes = secp256k1_ec_pubkey_serialize(btcpub_secp) = %s\n", HexStr(btcpubkeybytes.begin(), btcpubkeybytes.end()));
     assert(ret == 1);
     assert(btclen == 33);
     assert(btcpubkeybytes.size() == 33);
@@ -5484,20 +5498,26 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     //Create, verify whitelist proof
     secp256k1_whitelist_signature sig;
 
-    // masterpub_secp = secp256k1_ec_pubkey_parse(xpub)
+    // masterpub_secp = secp256k1_ec_pubkey_parse(xpub) = c930d2ddafbb06b23184bbc85cab6b97560146edda642647204ae49848cff062c578fa28f42d1ff023c128a34af076601a84c8aa04cb67e91d3eba2db594d5af
     // btcpub_secp = secp256k1_ec_pubkey_negate(masterpub_secp)
-    // masterOnlineKey = liquid_pak
-    // tweakSum = ?
+    //   e.g. affcac79bc574565073a2aff39d3efa4ee3854837f6f4928bc24c9192e5b883c1e2d087971698411a00a34dd433182c53add2f454cc08104307cc78847864a43
+    //   e.g. a8ecc2f629a2aee52240dd5c09a436678bbf778882d386a5ccdcadf3337be963196e34de3c68b1360bbe834852d942318b08d2c67b83bb98dfc0a0a1f4f10620
+    // masterOnlineKey = liquid_pak = baf941d9888cb1fa6f204e372ee42788fc3fa7f4366244c69b28c84a07c1424d
+    // tweakSum = ???
+    //   e.g. 02a82b3689b0b21a853057cd8ca3c318d6fdaa35c05448844c4a89e5fe754033
+    //   e.g. d5a2fa7a8b85a64e23680f01a3defcb5492d81900f5bcbeb351a3f8c83a49166
     // whitelistindex = 0
-    LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() masterpub_secp = %s\n", HexStr(masterpub_secp.data, masterpub_secp.data + 64));
-    LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() btcpub_secp = %s\n", HexStr(btcpub_secp.data, btcpub_secp.data + 64));
-    LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() masterOnlineKey = %s\n", HexStr(masterOnlineKey.begin(), masterOnlineKey.end()));
-    LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() tweakSum = %s\n", HexStr(tweakSum.begin(), tweakSum.end()));
-    LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() whitelistindex = %d\n", whitelistindex);
+
+    // LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() masterpub_secp  = %s\n", HexStr(masterpub_secp.data, masterpub_secp.data + 64));
+    // LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() btcpub_secp     = %s\n", HexStr(btcpub_secp.data, btcpub_secp.data + 64));
+    // LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() masterOnlineKey = %s\n", HexStr(masterOnlineKey.begin(), masterOnlineKey.end()));
+    // LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() tweakSum        = %s\n", HexStr(tweakSum.begin(), tweakSum.end()));
+    // LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() whitelistindex  = %d\n", whitelistindex);
 
     if(secp256k1_whitelist_sign(secp256k1_ctx, &sig, &paklist.OnlineKeys()[0], &paklist.OfflineKeys()[0], paklist.size(), &btcpub_secp, masterOnlineKey.begin(), &tweakSum[0], whitelistindex, NULL, NULL) != 1) {
         throw JSONRPCError(RPC_WALLET_ERROR, "Pegout authorization proof signing failed");
     }
+    LogPrintf("[iwan][ready] sig = %s\n", HexStr(sig.data, sig.data + 32 * (1 + 256)));
 
     if (secp256k1_whitelist_verify(secp256k1_ctx, &sig, &paklist.OnlineKeys()[0], &paklist.OfflineKeys()[0], paklist.size(), &btcpub_secp) != 1) {
         throw JSONRPCError(RPC_WALLET_ERROR, "Pegout authorization proof was created and signed but is invalid");
@@ -5509,7 +5529,7 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     unsigned char output[1 + 32 * (1 + 256)];
     size_t outlen = expectedOutputSize;
     secp256k1_whitelist_signature_serialize(secp256k1_ctx, output, &outlen, &sig);
-    LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() returns = %s\n", HexStr(output, output + outlen));
+    LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() returns = %s\n", HexStr(output, output + outlen));
     assert(outlen == expectedOutputSize);
     std::vector<unsigned char> whitelistproof(output, output + expectedOutputSize / sizeof(unsigned char));
 

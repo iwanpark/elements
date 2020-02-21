@@ -5483,6 +5483,18 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
 
     //Create, verify whitelist proof
     secp256k1_whitelist_signature sig;
+
+    // masterpub_secp = secp256k1_ec_pubkey_parse(xpub)
+    // btcpub_secp = secp256k1_ec_pubkey_negate(masterpub_secp)
+    // masterOnlineKey = liquid_pak
+    // tweakSum = ?
+    // whitelistindex = 0
+    LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() masterpub_secp = %s\n", HexStr(masterpub_secp));
+    LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() btcpub_secp = %s\n", HexStr(btcpub_secp));
+    LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() masterOnlineKey = %s\n", HexStr(masterOnlineKey.begin(), masterOnlineKey.end()));
+    LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() tweakSum = %s\n", HexStr(tweakSum.begin(), tweakSum.end()));
+    LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() whitelistindex = %d\n", whitelistindex);
+
     if(secp256k1_whitelist_sign(secp256k1_ctx, &sig, &paklist.OnlineKeys()[0], &paklist.OfflineKeys()[0], paklist.size(), &btcpub_secp, masterOnlineKey.begin(), &tweakSum[0], whitelistindex, NULL, NULL) != 1) {
         throw JSONRPCError(RPC_WALLET_ERROR, "Pegout authorization proof signing failed");
     }

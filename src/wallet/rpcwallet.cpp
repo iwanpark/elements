@@ -5036,13 +5036,18 @@ bool DerivePubTweak(const std::vector<uint32_t>& vPath, const CPubKey& keyMaster
         if ((vPath[i] >> 31) != 0) {
             return false;
         }
+
+        LogPrintf("[iwan][DerivePubTweak] i = %d\n", i);
+        LogPrintf("[iwan][DerivePubTweak] vPath[i] = %d\n", vPath[i]);
+        LogPrintf("[iwan][DerivePubTweak] keyParent = %s\n", HexStr(keyParent));
+        LogPrintf("[iwan][DerivePubTweak] ccParent = %s\n", HexStr(ccParent));
+
+        // keyParent, ccParent => keyChild, ccChild (while generating tweak)
         keyParent.Derive(keyChild, ccChild, vPath[i], ccParent, &tweak);
         assert(tweak.size() == 32);
         ccParent = ccChild;
         keyParent = keyChild;
-
-        LogPrintf("[iwan][DerivePubTweak] i = %d\n", i);
-        LogPrintf("[iwan][DerivePubTweak] vPath[i] = %d\n", vPath[i]);
+        
         LogPrintf("[iwan][DerivePubTweak] tweak = %s\n", HexStr(tweak.begin(), tweak.end()));
         bool ret = secp256k1_ec_privkey_tweak_add(secp256k1_ctx, tweakSum.data(), tweak.data());
         LogPrintf("[iwan][DerivePubTweak] tweakSum = %s\n", HexStr(tweakSum.begin(), tweakSum.end()));

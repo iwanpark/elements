@@ -5497,6 +5497,7 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     unsigned char output[1 + 32 * (1 + 256)];
     size_t outlen = expectedOutputSize;
     secp256k1_whitelist_signature_serialize(secp256k1_ctx, output, &outlen, &sig);
+    LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() returns = %s\n", HexStr(output, output + outlen));
     assert(outlen == expectedOutputSize);
     std::vector<unsigned char> whitelistproof(output, output + expectedOutputSize / sizeof(unsigned char));
 

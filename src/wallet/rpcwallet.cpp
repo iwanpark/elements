@@ -5040,7 +5040,12 @@ bool DerivePubTweak(const std::vector<uint32_t>& vPath, const CPubKey& keyMaster
         assert(tweak.size() == 32);
         ccParent = ccChild;
         keyParent = keyChild;
+
+        LogPrintf("[iwan][DerivePubTweak] i = %d\n", i);
+        LogPrintf("[iwan][DerivePubTweak] tweak = %s\n", HexStr(tweak.begin(), tweakSum.end()));
         bool ret = secp256k1_ec_privkey_tweak_add(secp256k1_ctx, tweakSum.data(), tweak.data());
+        LogPrintf("[iwan][DerivePubTweak] tweakSum = %s\n", HexStr(tweakSum.begin(), tweakSum.end()));
+
         if (!ret) {
             return false;
         }
@@ -5445,7 +5450,7 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     CPubKey masterpub = xpub.pubkey;
     secp256k1_pubkey masterpub_secp;
 
-    LogPrintf("[iwan][ready] masterpub = %s\n", HexStr(masterpub));
+    LogPrintf("[iwan][ready] masterpub = %s\n", HexStr(masterpub.begin(), masterpub.size()));
     int ret = secp256k1_ec_pubkey_parse(secp256k1_ctx, &masterpub_secp, masterpub.begin(), masterpub.size());
     LogPrintf("[iwan][ready] masterpub_secp = secp256k1_ec_pubkey_parse(masterpub) = %s\n", HexStr(masterpub_secp.data, masterpub_secp.data + 64));
 
@@ -5482,7 +5487,7 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     LogPrintf("[iwan][ready] tweakSum = DerivePubTweak(key_path, xpub.pubkey, xpub.chaincode) = %s\n", HexStr(tweakSum.begin(), tweakSum.end()));
 
     ret = secp256k1_ec_pubkey_tweak_add(secp256k1_ctx, &btcpub_secp, tweakSum.data());
-    LogPrintf("[iwan][ready] btcpub_secp = secp256k1_ec_pubkey_tweak_add(tweakSum) = %s\n", HexStr(btcpub_secp.data, btcpub_secp.data + 64));
+    LogPrintf("[iwan][ready] btcpub_secp = secp256k1_ec_pubkey_tweak_add(btcpub_secp, tweakSum) = %s\n", HexStr(btcpub_secp.data, btcpub_secp.data + 64));
     assert(ret);
 
     std::vector<unsigned char> btcpubkeybytes;

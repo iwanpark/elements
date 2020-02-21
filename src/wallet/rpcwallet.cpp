@@ -5450,7 +5450,7 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     CPubKey masterpub = xpub.pubkey;
     secp256k1_pubkey masterpub_secp;
 
-    LogPrintf("[iwan][ready] masterpub = %s\n", HexStr(masterpub.begin(), masterpub.size()));
+    LogPrintf("[iwan][ready] masterpub = %s\n", HexStr(masterpub.begin(), masterpub.end()));
     int ret = secp256k1_ec_pubkey_parse(secp256k1_ctx, &masterpub_secp, masterpub.begin(), masterpub.size());
     LogPrintf("[iwan][ready] masterpub_secp = secp256k1_ec_pubkey_parse(masterpub) = %s\n", HexStr(masterpub_secp.data, masterpub_secp.data + 64));
 

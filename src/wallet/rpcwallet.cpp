@@ -5481,9 +5481,8 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     }
     LogPrintf("[iwan][ready] tweakSum = DerivePubTweak(key_path, xpub.pubkey, xpub.chaincode) = %s\n", HexStr(tweakSum.begin(), tweakSum.end()));
 
-    LogPrintf("[iwan][ready] tweakSum.data() for btcpub_secp = %s\n", HexStr(tweakSum.data()));
     ret = secp256k1_ec_pubkey_tweak_add(secp256k1_ctx, &btcpub_secp, tweakSum.data());
-    LogPrintf("[iwan][ready] btcpub_secp = secp256k1_ec_pubkey_tweak_add(tweakSum.data()) = %s\n", HexStr(btcpub_secp.data, btcpub_secp.data + 64));
+    LogPrintf("[iwan][ready] btcpub_secp = secp256k1_ec_pubkey_tweak_add(tweakSum) = %s\n", HexStr(btcpub_secp.data, btcpub_secp.data + 64));
     assert(ret);
 
     std::vector<unsigned char> btcpubkeybytes;

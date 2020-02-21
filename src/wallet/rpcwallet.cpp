@@ -5489,8 +5489,8 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     // masterOnlineKey = liquid_pak
     // tweakSum = ?
     // whitelistindex = 0
-    LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() masterpub_secp = %s\n", HexStr(masterpub_secp));
-    LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() btcpub_secp = %s\n", HexStr(btcpub_secp));
+    LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() masterpub_secp = %s\n", HexStr(masterpub_secp.data, masterpub_secp.data + 64));
+    LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() btcpub_secp = %s\n", HexStr(btcpub_secp.data, btcpub_secp.data + 64));
     LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() masterOnlineKey = %s\n", HexStr(masterOnlineKey.begin(), masterOnlineKey.end()));
     LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() tweakSum = %s\n", HexStr(tweakSum.begin(), tweakSum.end()));
     LogPrintf("[iwan][send] secp256k1_whitelist_signature_serialize() whitelistindex = %d\n", whitelistindex);

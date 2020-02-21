@@ -5047,7 +5047,7 @@ bool DerivePubTweak(const std::vector<uint32_t>& vPath, const CPubKey& keyMaster
         assert(tweak.size() == 32);
         ccParent = ccChild;
         keyParent = keyChild;
-        
+
         LogPrintf("[iwan][DerivePubTweak] tweak = %s\n", HexStr(tweak.begin(), tweak.end()));
         bool ret = secp256k1_ec_privkey_tweak_add(secp256k1_ctx, tweakSum.data(), tweak.data());
         LogPrintf("[iwan][DerivePubTweak] tweakSum = %s\n", HexStr(tweakSum.begin(), tweakSum.end()));
@@ -5056,6 +5056,10 @@ bool DerivePubTweak(const std::vector<uint32_t>& vPath, const CPubKey& keyMaster
             return false;
         }
     }
+
+    LogPrintf("[iwan][DerivePubTweak] keyParent = %s\n", HexStr(keyParent));
+    LogPrintf("[iwan][DerivePubTweak] ccParent = %s\n", HexStr(ccParent));
+
     return true;
 }
 

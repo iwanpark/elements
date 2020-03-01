@@ -5522,7 +5522,7 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     //   e.g. d5a2fa7a8b85a64e23680f01a3defcb5492d81900f5bcbeb351a3f8c83a49166
     // whitelistindex = 0
 
-    LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() secp256k1_ctx = %s\n", HexStr(secp256k1_ctx, secp256k1_ctx + 1000));
+    LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() secp256k1_ctx = %s\n", HexStr(((unsigned char*)secp256k1_ctx)), ((unsigned char*)secp256k1_ctx)) + 1000);
     // LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() masterpub_secp  = %s\n", HexStr(masterpub_secp.data, masterpub_secp.data + 64));
     // LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() btcpub_secp     = %s\n", HexStr(btcpub_secp.data, btcpub_secp.data + 64));
     // LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() masterOnlineKey = %s\n", HexStr(masterOnlineKey.begin(), masterOnlineKey.end()));

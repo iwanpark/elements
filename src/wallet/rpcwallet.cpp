@@ -5524,13 +5524,8 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     // whitelistindex = 0
 
     LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() secp256k1_ctx = %s\n", HexStr((unsigned char*)secp256k1_ctx, ((unsigned char*)secp256k1_ctx) + sizeof(secp256k1_ctx)));
-    LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() paklist.OnlineKeys() = ");
-    int i;
-    for (i = 0; i < paklist.OnlineKeys().size(); i++) {
-        secp256k1_pubkey key = paklist.OnlineKeys().at(i);
-        LogPrintf("%s", HexStr(key.data, key.data + 64));
-    LogPrintf("\n");
-    LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() paklist.OfflineKeys() = ");
+    LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() paklist.OnlineKeys() = %s\n", HexStr((unsigned char*)&paklist.OnlineKeys()[0], ((unsigned char*)&paklist.OnlineKeys()[0]) + 10000));
+    LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() paklist.OfflineKeys() = %s\n", HexStr((unsigned char*)&paklist.OfflineKeys()[0], ((unsigned char*)&paklist.OfflineKeys()[0]) + 10000));
     int i;
     for (i = 0; i < paklist.OfflineKeys().size(); i++) {
         secp256k1_pubkey key = paklist.OfflineKeys().at(i);

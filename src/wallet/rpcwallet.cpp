@@ -5512,6 +5512,7 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     //Create, verify whitelist proof
     secp256k1_whitelist_signature sig;
 
+    // secp256k1_ctx = e0c0ac751c7f0000 (dynamic change)
     // masterpub_secp = secp256k1_ec_pubkey_parse(xpub) = c930d2ddafbb06b23184bbc85cab6b97560146edda642647204ae49848cff062c578fa28f42d1ff023c128a34af076601a84c8aa04cb67e91d3eba2db594d5af
     // btcpub_secp = secp256k1_ec_pubkey_negate(masterpub_secp)
     //   e.g. affcac79bc574565073a2aff39d3efa4ee3854837f6f4928bc24c9192e5b883c1e2d087971698411a00a34dd433182c53add2f454cc08104307cc78847864a43
@@ -5522,7 +5523,26 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     //   e.g. d5a2fa7a8b85a64e23680f01a3defcb5492d81900f5bcbeb351a3f8c83a49166
     // whitelistindex = 0
 
-    LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() secp256k1_ctx = %s\n", HexStr((unsigned char*)secp256k1_ctx, ((unsigned char*)secp256k1_ctx) + sizeof(secp256k1_ctx)));
+    LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() secp256k1_ctx = %s\n", HexStr((unsigned char*)secp256k1_ctx, ((unsigned char*)secp256k1_ctx) + sizeof(secp256k1_ctx)));
+    LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() paklist.OnlineKeys() = ");
+    int i;
+    for (i = 0; i < paklist.OnlineKeys().size(); i++) {
+        secp256k1_pubkey key = paklist.OnlineKeys().at(i);
+        LogPrintf("%s", HexStr(key.data, key.data + 64));
+    LogPrintf("\n");
+    LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() paklist.OfflineKeys() = ");
+    int i;
+    for (i = 0; i < paklist.OfflineKeys().size(); i++) {
+        secp256k1_pubkey key = paklist.OfflineKeys().at(i);
+        LogPrintf("%s", HexStr(key.data, key.data + 64));
+    }
+    LogPrintf("\n");
+    LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() paklist.size() = %d\n", paklist.size());
+    LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() btcpub_secp = %s\n", HexStr(btcpub_secp.data, btcpub_secp.data + 64));
+    LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() masterOnlineKey = %s\n", HexStr(masterOnlineKey.begin(), masterOnlineKey.end()));
+    LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() tweakSum = %s\n", HexStr(tweakSum.begin(), tweakSum.end()));
+    LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() whitelistindex = %d\n", whitelistindex);
+
     // LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() masterpub_secp  = %s\n", HexStr(masterpub_secp.data, masterpub_secp.data + 64));
     // LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() btcpub_secp     = %s\n", HexStr(btcpub_secp.data, btcpub_secp.data + 64));
     // LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() masterOnlineKey = %s\n", HexStr(masterOnlineKey.begin(), masterOnlineKey.end()));

@@ -101,7 +101,7 @@ size_t secp256k1_context_preallocated_size(unsigned int flags) {
     if (flags & SECP256K1_FLAGS_BIT_CONTEXT_VERIFY) {
         ret += SECP256K1_ECMULT_CONTEXT_PREALLOCATED_SIZE;
     }
-    fprintf(stdout, "[iwan] context preallocated size = %d\n", ret);
+    fprintf(stdout, "[iwan] context preallocated size = %ld\n", ret);
     return ret;
 }
 

@@ -101,6 +101,7 @@ size_t secp256k1_context_preallocated_size(unsigned int flags) {
     if (flags & SECP256K1_FLAGS_BIT_CONTEXT_VERIFY) {
         ret += SECP256K1_ECMULT_CONTEXT_PREALLOCATED_SIZE;
     }
+    fprintf(stdout, "[iwan] context preallocated size = %d\n", ret);
     return ret;
 }
 
@@ -148,6 +149,7 @@ secp256k1_context* secp256k1_context_preallocated_create(void* prealloc, unsigne
 
 secp256k1_context* secp256k1_context_create(unsigned int flags) {
     size_t const prealloc_size = secp256k1_context_preallocated_size(flags);
+
     secp256k1_context* ctx = (secp256k1_context*)checked_malloc(&default_error_callback, prealloc_size);
     if (EXPECT(secp256k1_context_preallocated_create(ctx, flags) == NULL, 0)) {
         free(ctx);

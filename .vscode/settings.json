@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "system.h": "c",
+        "strencodings.h": "c",
+        "pedersen.h": "c"
+    }
+}

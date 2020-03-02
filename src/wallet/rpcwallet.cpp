@@ -5525,7 +5525,7 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     //   e.g. d5a2fa7a8b85a64e23680f01a3defcb5492d81900f5bcbeb351a3f8c83a49166
     // whitelistindex = 0
 
-    LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() secp256k1_ctx = %s\n", HexStr((unsigned char*)secp256k1_ctx, ((unsigned char*)secp256k1_ctx) + secp256k1_context_preallocated_clone_size(secp256k1_ctx)));
+    // LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() secp256k1_ctx = %s\n", HexStr((unsigned char*)secp256k1_ctx, ((unsigned char*)secp256k1_ctx) + secp256k1_context_preallocated_clone_size(secp256k1_ctx)));
     // LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() paklist.OnlineKeys() = %s\n", HexStr((unsigned char*)&paklist.OnlineKeys()[0], ((unsigned char*)&paklist.OnlineKeys()[0]) + 64));
     // LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() paklist.OfflineKeys() = %s\n", HexStr((unsigned char*)&paklist.OfflineKeys()[0], ((unsigned char*)&paklist.OfflineKeys()[0]) + 64));
     // LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() paklist.OfflineKeys() = %s\n", HexStr((unsigned char*)&paklist.OfflineKeys()[0], ((unsigned char*)&paklist.OfflineKeys()[28]) + 64));
@@ -5536,7 +5536,7 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() tweakSum = %s\n", HexStr(tweakSum.begin(), tweakSum.end()));
     LogPrintf("[iwan][wsign] secp256k1_whitelist_signature_serialize() whitelistindex = %d\n", whitelistindex);
 
-    // LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() masterpub_secp  = %s\n", HexStr(masterpub_secp.data, masterpub_secp.data + 64));
+    LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() masterpub_secp  = %s\n", HexStr(masterpub_secp.data, masterpub_secp.data + 64));
     // LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() btcpub_secp     = %s\n", HexStr(btcpub_secp.data, btcpub_secp.data + 64));
     // LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() masterOnlineKey = %s\n", HexStr(masterOnlineKey.begin(), masterOnlineKey.end()));
     // LogPrintf("[iwan][ready] secp256k1_whitelist_signature_serialize() tweakSum        = %s\n", HexStr(tweakSum.begin(), tweakSum.end()));

@@ -5545,7 +5545,7 @@ UniValue sendtomainchain_pak(const JSONRPCRequest& request)
     if(secp256k1_whitelist_sign(secp256k1_ctx, &sig, &paklist.OnlineKeys()[0], &paklist.OfflineKeys()[0], paklist.size(), &btcpub_secp, masterOnlineKey.begin(), &tweakSum[0], whitelistindex, NULL, NULL) != 1) {
         throw JSONRPCError(RPC_WALLET_ERROR, "Pegout authorization proof signing failed");
     }
-    LogPrintf("[iwan][ready] sig = %s\n", HexStr(sig.data, sig.data + 32 * (1 + 256)));
+    LogPrintf("[iwan][ready] sig = %s\n", HexStr((unsigned char*)&sig.data, ((unsigned char*)&sig.data) + sizeof(secp256k1_whitelist_signature)));
 
     if (secp256k1_whitelist_verify(secp256k1_ctx, &sig, &paklist.OnlineKeys()[0], &paklist.OfflineKeys()[0], paklist.size(), &btcpub_secp) != 1) {
         throw JSONRPCError(RPC_WALLET_ERROR, "Pegout authorization proof was created and signed but is invalid");

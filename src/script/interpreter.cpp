@@ -1589,6 +1589,7 @@ uint256 GetIssuanceHash(const T& txTo)
         else
             ss << txin.assetIssuance;
     }
+    LogPrintf("[iwan][hash] ss << HASH ISSUANCE (END)\n");
     return ss.GetHash();
 }
 

@@ -1581,6 +1581,7 @@ uint256 GetSequenceHash(const T& txTo)
 template <class T>
 uint256 GetIssuanceHash(const T& txTo)
 {
+    LogPrintf("[iwan][hash] ss << HASH ISSUANCE\n");
     CHashWriter ss(SER_GETHASH, 0);
     for (const auto& txin : txTo.vin) {
         if (txin.assetIssuance.IsNull())

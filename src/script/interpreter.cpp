@@ -1242,6 +1242,7 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                     int i = 1;
                     if ((int)stack.size() < i)
                         return set_error(serror, SCRIPT_ERR_INVALID_STACK_OPERATION);
+                    LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 1 stack.size() = %d\n", (int)stack.size());
 
                     LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 2\n");
 

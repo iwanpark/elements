@@ -1236,6 +1236,7 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                 case OP_CHECKMULTISIG:
                 case OP_CHECKMULTISIGVERIFY:
                 {
+                    LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY!!!");
                     // ([sig ...] num_of_signatures [pubkey ...] num_of_pubkeys -- bool)
 
                     int i = 1;
@@ -1289,7 +1290,6 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                         // See the script_(in)valid tests for details.
                         if (!CheckSignatureEncoding(vchSig, flags, serror) || !CheckPubKeyEncoding(vchPubKey, flags, sigversion, serror)) {
                             // serror is set
-                            LogPrintf("[iwan][hash] ERROR HERE\n");
                             return false;
                         }
 

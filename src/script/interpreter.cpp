@@ -1236,19 +1236,27 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                 case OP_CHECKMULTISIG:
                 case OP_CHECKMULTISIGVERIFY:
                 {
-                    LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY!!!");
+                    LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 1\n");
                     // ([sig ...] num_of_signatures [pubkey ...] num_of_pubkeys -- bool)
 
                     int i = 1;
                     if ((int)stack.size() < i)
                         return set_error(serror, SCRIPT_ERR_INVALID_STACK_OPERATION);
 
+                    LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 2\n");
+
                     int nKeysCount = CScriptNum(stacktop(-i), fRequireMinimal).getint();
                     if (nKeysCount < 0 || nKeysCount > MAX_PUBKEYS_PER_MULTISIG)
                         return set_error(serror, SCRIPT_ERR_PUBKEY_COUNT);
+                    
+                    LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 3\n");
+
                     nOpCount += nKeysCount;
                     if (nOpCount > MAX_OPS_PER_SCRIPT)
                         return set_error(serror, SCRIPT_ERR_OP_COUNT);
+
+                    LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 4\n");
+
                     int ikey = ++i;
                     // ikey2 is the position of last non-signature item in the stack. Top stack item = 1.
                     // With SCRIPT_VERIFY_NULLFAIL, this is used for cleanup if operation fails.
@@ -1257,13 +1265,20 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                     if ((int)stack.size() < i)
                         return set_error(serror, SCRIPT_ERR_INVALID_STACK_OPERATION);
 
+                    LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 5\n");
+
                     int nSigsCount = CScriptNum(stacktop(-i), fRequireMinimal).getint();
                     if (nSigsCount < 0 || nSigsCount > nKeysCount)
                         return set_error(serror, SCRIPT_ERR_SIG_COUNT);
+
+                    LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 6\n");
+
                     int isig = ++i;
                     i += nSigsCount;
                     if ((int)stack.size() < i)
                         return set_error(serror, SCRIPT_ERR_INVALID_STACK_OPERATION);
+
+                    LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 7\n");
 
                     // Subset of script starting at the most recent codeseparator
                     CScript scriptCode(pbegincodehash, pend);
@@ -1278,6 +1293,8 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                                 return set_error(serror, SCRIPT_ERR_SIG_FINDANDDELETE);
                         }
                     }
+
+                    LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 8\n");
 
                     bool fSuccess = true;
                     while (fSuccess && nSigsCount > 0)
@@ -1310,6 +1327,8 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                             fSuccess = false;
                     }
 
+                    LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 9\n");
+
                     // Clean up stack of actual arguments
                     while (i-- > 1) {
                         // If the operation failed, we require that all signatures must be empty vector
@@ -1319,6 +1338,8 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                             ikey2--;
                         popstack(stack);
                     }
+
+                    LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 10\n");
 
                     // A bug causes CHECKMULTISIG to consume one extra argument
                     // whose contents were not checked in any way.
@@ -1333,6 +1354,8 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                     popstack(stack);
 
                     stack.push_back(fSuccess ? vchTrue : vchFalse);
+
+                    LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 11\n");
 
                     if (opcode == OP_CHECKMULTISIGVERIFY)
                     {

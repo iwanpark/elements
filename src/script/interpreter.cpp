@@ -1307,6 +1307,7 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                         // See the script_(in)valid tests for details.
                         if (!CheckSignatureEncoding(vchSig, flags, serror) || !CheckPubKeyEncoding(vchPubKey, flags, sigversion, serror)) {
                             // serror is set
+                            LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 8-1\n");
                             return false;
                         }
 
@@ -1323,8 +1324,10 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                         // If there are more signatures left than keys left,
                         // then too many signatures have failed. Exit early,
                         // without checking any further signatures.
-                        if (nSigsCount > nKeysCount)
+                        if (nSigsCount > nKeysCount) {
+                            LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 8-2\n");
                             fSuccess = false;
+                        }
                     }
 
                     LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 9\n");
@@ -1332,9 +1335,10 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                     // Clean up stack of actual arguments
                     while (i-- > 1) {
                         // If the operation failed, we require that all signatures must be empty vector
-                        if (!fSuccess && (flags & SCRIPT_VERIFY_NULLFAIL) && !ikey2 && stacktop(-1).size())
+                        if (!fSuccess && (flags & SCRIPT_VERIFY_NULLFAIL) && !ikey2 && stacktop(-1).size()) {
+                            LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 9-1\n");
                             return set_error(serror, SCRIPT_ERR_SIG_NULLFAIL);
-                        if (ikey2 > 0)
+                        } if (ikey2 > 0)
                             ikey2--;
                         popstack(stack);
                     }

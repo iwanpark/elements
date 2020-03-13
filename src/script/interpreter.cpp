@@ -1326,6 +1326,7 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                         // without checking any further signatures.
                         if (nSigsCount > nKeysCount) {
                             LogPrintf("[iwan] OP_CHECKMULTISIGVERIFY 8-2\n");
+                            LogPrintf("[iwan] nSigCount = %d / nKeysCount = %d\n", nSigsCount, nKeysCount);
                             fSuccess = false;
                         }
                     }

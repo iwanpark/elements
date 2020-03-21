@@ -788,7 +788,7 @@ public:
         // Legacy PAK list
         consensus.first_extension_space = {
             ParseHex("035562074c01cf2ea368981dda8913bb8ba59d2375084db47072e0b16db89fadbd"
-                    "022cdc89d338268b8f4cb2856e1e52e68a1b303c3774554538a1e69ae39e0948bf"),
+                    "03e2db8da3f5e818be5292614e4bf4dc898e7bda8ff65bdcf938c7a26a58b23d88"),
             ParseHex("033fad80bd2b818d1ca8a8d4a25dafcf5e740be07db6788be1f2f15266e3c6805d"
                     "0253ff3f140ef8f594d54996eab810a82550c79204279920d95681afe699d00da5"),
             ParseHex("03f2d35e88741f930a3938bfa7075377ec2da4f1d7699a779e2cbf7a389195dc67"
